@@ -1,6 +1,4 @@
-Here is the updated `README.txt` file with the preview image and the modified project structure, as you requested.
 
------
 
 # 🏡 Bangalore Home Price Prediction Web App
 
@@ -9,7 +7,7 @@ This project combines **data preprocessing**, **model training**, and a **beauti
 
 ## ✨ Preview
 
-\![App Preview](https://github.com/Diwansh-Thakur/Banglore-House-Price-Prediction/blob/1b7e51da5d55a6b2c97841f40c01b0b9844d0f7d/banglore/preview/screenshot.png.png)
+![App Preview](https://github.com/Diwansh-Thakur/Banglore-House-Price-Prediction/blob/1b7e51da5d55a6b2c97841f40c01b0b9844d0f7d/banglore/preview/screenshot.png.png)
 
 -----
 
