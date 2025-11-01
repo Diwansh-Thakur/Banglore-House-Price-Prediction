@@ -24,13 +24,13 @@ locations = data_columns[3:]  # all locations
 
 templates_dir = os.path.join(base_dir, '../templates')
 import os
-from flask import Flask
+from flask import Flask, request, jsonify, render_template
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
-TEMPLATE_DIR = os.path.join(BASE_DIR, "..", "templates")  
-STATIC_DIR = os.path.join(BASE_DIR, "..", "static")       
-app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
+app = Flask(__name__, template_folder=TEMPLATE_DIR)
+
 
 app = Flask(__name__, template_folder=templates_dir)
 
@@ -69,6 +69,7 @@ if __name__ == "__main__":
     if __name__ == "__main__":
         port = int(os.environ.get("PORT", 5000))
         app.run(host="0.0.0.0", port=port)
+
 
 
 
