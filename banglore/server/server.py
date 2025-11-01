@@ -1,17 +1,14 @@
+from flask import Flask, request, jsonify, render_template
 import pickle
 import json
 import numpy as np
 import os
-from flask import Flask, request, jsonify, render_template
 
 # ---------- Load model and columns ----------
 
-base_dir = os.path.dirname(os.path.abspath(__file__))               # /banglore/server
-project_root = os.path.dirname(base_dir)                           # /banglore
-
-model_path = os.path.join(project_root, 'model/banglore_home_prices_model.pickle')
-columns_path = os.path.join(project_root, 'model/columns.json')
-templates_dir = os.path.join(project_root, 'templates')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(base_dir, '../model/banglore_home_prices_model.pickle')
+columns_path = os.path.join(base_dir, '../model/columns.json')
 
 # Load model
 with open(model_path, 'rb') as f:
@@ -24,6 +21,8 @@ with open(columns_path, 'r') as f:
 locations = data_columns[3:]  # all locations
 
 # ---------- Flask App ----------
+
+templates_dir = os.path.join(base_dir, '../templates')
 app = Flask(__name__, template_folder=templates_dir)
 
 def predict_price(location, sqft, bath, bhk):
@@ -36,7 +35,6 @@ def predict_price(location, sqft, bath, bhk):
     x[0] = sqft
     x[1] = bath
     x[2] = bhk
-
     if loc_index >= 0:
         x[loc_index] = 1
 
@@ -57,8 +55,6 @@ def predict_home_price():
     estimated_price = predict_price(location, sqft, bath, bhk)
     return jsonify({'estimated_price': estimated_price})
 
-# ---------- Run Server ----------
 if __name__ == "__main__":
     print("✅ Starting Flask Server for Bangalore Home Price Prediction...")
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
