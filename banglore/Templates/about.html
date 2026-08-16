@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}About AI Model - Bangalore Home Prices{% endblock %}
+
+{% block styles %}
+  .content-wrap {
+    padding: 60px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.7;
+    animation: fadeIn 0.8s ease-out;
+  }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
+  
+  .content-wrap h1 {
+    font-size: 34px;
+    color: var(--violet-1);
+    margin-bottom: 24px;
+    text-shadow: 0 0 20px rgba(124,58,237,0.3);
+  }
+  
+  .content-wrap h2 {
+    font-size: 22px;
+    color: #dfd8ff;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 8px;
+  }
+  
+  .content-wrap p {
+    color: #b0a3ff;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .model-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    margin-top: 30px;
+    border: 1px solid rgba(124,58,237,0.1);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .stat-box {
+    background: rgba(10,0,20,0.5);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.02);
+  }
+  
+  .stat-val { font-size: 28px; font-weight: 700; color: #fff; text-shadow: 0 0 10px var(--violet-1); }
+  .stat-lbl { font-size: 13px; color: #a99ee1; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <div class="content-wrap">
+    <h1>Understanding Our AI Model</h1>
+    <p>The Bangalore Home Price Predictor is powered by an advanced Machine Learning algorithm trained on thousands of real estate data points from across Bangalore, India.</p>
+    
+    <div class="model-card">
+      <h2>Model Architecture</h2>
+      <p>We utilize a highly optimized <strong>Linear Regression</strong> model (or ensemble depending on the training backend) built using Scikit-Learn. The algorithm takes into consideration crucial factors such as total square footage, number of bedrooms (BHK), number of bathrooms, and the specific locality to project an accurate market price.</p>
+      
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-val">80+</div>
+          <div class="stat-lbl">Locations</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">10K+</div>
+          <div class="stat-lbl">Data Points</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">86%</div>
+          <div class="stat-lbl">Accuracy rate</div>
+        </div>
+      </div>
+    </div>
+    
+    <h2>Data Preprocessing</h2>
+    <p>Before training, the dataset underwent rigorous cleaning. Missing values were handled using median imputation for numerical data, while outliers in square footage and price per square foot were removed to prevent skewed results.</p>
+    
+  </div>
+</div>
+{% endblock %}

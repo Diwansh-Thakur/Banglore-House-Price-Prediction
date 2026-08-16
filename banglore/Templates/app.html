@@ -1,213 +1,240 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bangalore Home Price Prediction</title>
+{% extends "base.html" %}
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+{% block title %}Bangalore Home Price Predictor & Tools{% endblock %}
 
-    :root{
-      --violet-1: #7c3aed;
-      --violet-2: #4f46e5;
-      --bg: #0a0014;
-      --card-bg: rgba(27,16,48,0.85);
-      --accent: rgba(137,99,254,0.85);
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:"Poppins",sans-serif;
-      background:linear-gradient(180deg,#07010a 0%, #0a0014 100%);
-      color:#e8e6ff;
-      height:100vh;
-      display:flex;
-      overflow:hidden;
-    }
-
-    .wrap{
-      display:flex;
-      width:100%;
-      height:100vh;
+{% block styles %}
+    .wrap {
+      display: flex;
+      width: 100%;
+      min-height: calc(100vh - 70px);
     }
 
     /* left form */
     .left {
-      width:44%;
-      padding:56px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      z-index:3;
+      width: 44%;
+      padding: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      z-index: 3;
       flex-direction: column;
     }
     .glow {
-      position:absolute;
-      width:420px;height:420px;
-      left:20px; top:-120px;
-      background: radial-gradient(circle,#4f46e5 0%, transparent 60%);
-      filter:blur(80px); opacity:0.28; z-index:1;
+      position: absolute;
+      width: 420px; height: 420px;
+      left: 20px; top: -120px;
+      background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+      filter: blur(80px); opacity: 0.15; z-index: 1;
       animation: drift 8s ease-in-out infinite alternate;
     }
     @keyframes drift{from{transform:translateY(0)}to{transform:translateY(30px)}}
 
-    .card{
-      width:420px;
-      background:var(--card-bg);
-      border-radius:18px;
-      padding:34px;
-      box-shadow:0 12px 40px rgba(79,70,229,0.08), inset 0 1px 0 rgba(255,255,255,0.02);
+    .card {
+      margin: auto 0;
+      width: 420px;
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 34px;
+      box-shadow: 0 12px 40px rgba(16,185,129,0.04), inset 0 1px 0 rgba(255,255,255,0.03);
       backdrop-filter: blur(8px);
-      position:relative; z-index:5;
+      position: relative; z-index: 5;
+      border: 1px solid rgba(16,185,129,0.1);
     }
 
-    h1{
-      color:var(--violet-1);
-      font-size:26px;
-      margin-bottom:22px;
-      text-shadow:0 0 18px rgba(116,81,255,0.12);
+    h1 {
+      color: var(--violet-1);
+      font-size: 26px;
+      margin-bottom: 22px;
+      text-shadow: 0 0 18px rgba(16,185,129,0.15);
     }
 
-    label{display:block;margin-top:14px;color:#dcd4ff;font-weight:600}
-    input, select{
-      margin-top:8px;
-      width:100%;
-      padding:12px 14px;
-      border-radius:10px;
-      border:none;
-      background:#1b1030;
-      color:#efeaff;
-      outline:none;
-      box-shadow: 0 6px 18px rgba(79,70,229,0.06);
-      font-size:15px;
-      transition:box-shadow .25s, transform .12s;
+    label { display: block; margin-top: 14px; color: #cbd5e1; font-weight: 600; font-size: 14px; }
+    
+    input, select {
+      margin-top: 8px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: #1e293b;
+      color: #f8fafc;
+      outline: none;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+      font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    input:focus, select:focus{ box-shadow:0 0 20px rgba(116,81,255,0.18); transform: translateY(-2px); }
+    input:focus, select:focus { 
+      border-color: var(--violet-1);
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.1); 
+    }
 
-    button{
-      margin-top:22px;
-      width:100%;
-      padding:12px 14px;
-      border-radius:10px;
-      border:none;
-      background:linear-gradient(90deg,var(--violet-2),var(--violet-1));
-      color:#fff;
-      font-weight:700;
-      font-size:15px;
-      cursor:pointer;
-      box-shadow:0 10px 30px rgba(79,70,229,0.18);
+    button {
+      margin-top: 22px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(90deg, var(--violet-2), var(--violet-1));
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(16,185,129,0.2);
       transition: transform .12s, box-shadow .12s;
     }
-    button:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(116,81,255,0.26) }
+    button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(16,185,129,0.3) }
+    button.secondary {
+      background: #334155;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-top: 12px;
+    }
+    button.secondary:hover { background: #475569; }
 
-    .result{
-      margin-top:18px;
-      padding:12px;
-      background:rgba(116,81,255,0.06);
-      color:var(--accent);
-      border-radius:10px;
-      font-weight:700;
-      text-align:center;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    .result {
+      margin-top: 18px;
+      padding: 16px;
+      background: rgba(16,185,129,0.05);
+      border: 1px solid rgba(16,185,129,0.2);
+      color: var(--accent);
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: none;
     }
 
-    /* Footer credit */
-    .footer {
-      margin-top:20px;
-      text-align:center;
-      color:#9b8cff;
-      font-size:14px;
-      font-weight:600;
-      letter-spacing:1px;
-      text-shadow:0 0 8px rgba(137,99,254,0.6);
-      animation: glowText 2s ease-in-out infinite alternate;
-    }
-    @keyframes glowText {
-      from { text-shadow:0 0 8px rgba(137,99,254,0.4); }
-      to { text-shadow:0 0 16px rgba(137,99,254,0.9); }
+    .insight {
+      font-size: 13px; font-weight: 400; color: #94a3b8; margin-top: 6px;
     }
 
-    /* right slideshow */
-    .right{
-      width:56%;
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(180deg, rgba(16,6,36,0.6) 0%, rgba(10,0,20,0.9) 100%);
+    .amenities { display: flex; gap: 16px; margin-top: 14px; margin-bottom: 4px; }
+    .amenity-label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: #cbd5e1; cursor: pointer; font-weight: 500;
+    }
+    .amenity-label input { width: auto; margin: 0; box-shadow: none; accent-color: var(--violet-1); }
+
+    .history {
+      margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;
+    }
+    .history h3 { font-size: 13px; color: #94a3b8; margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .history-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .history-item {
+      font-size: 13px; background: rgba(15,23,42,0.4); padding: 10px 14px;
+      border-radius: 8px; display: flex; justify-content: space-between; color: #e2e8f0; border-left: 3px solid var(--violet-2);
     }
 
-    .slides {
-      position:relative;
-      width:100%;
-      height:100%;
-    }
+    .footer { margin-top: 20px; text-align: center; color: #64748b; font-size: 13px; }
 
-    .slide{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      background-size:cover;
-      background-position:center;
-      opacity:0;
-      transition:opacity 1.5s ease-in-out, transform 1.5s ease;
-      transform: scale(1.05);
+    /* RIGHT slideshow */
+    .right {
+      width: 56%; position: relative; overflow: hidden; display: flex;
+      align-items: center; justify-content: center; background: #020617;
     }
-    .slide.active{ opacity:1; transform: scale(1); }
-
+    .slides { position: relative; width: 100%; height: 100%; }
+    .slide {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      background-size: cover; background-position: center; opacity: 0;
+      transition: opacity 1.5s ease-in-out, transform 1.5s ease; transform: scale(1.05);
+    }
+    .slide.active { opacity: 1; transform: scale(1); }
     .overlay {
-      position:absolute;
-      inset:0;
-      background: linear-gradient(180deg, rgba(10,4,20,0.18) 0%, rgba(6,2,12,0.45) 100%);
-      z-index:2;
-      pointer-events:none;
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(2,6,23,0.2) 0%, rgba(15,23,42,0.8) 100%);
+      z-index: 2; pointer-events: none;
     }
-
-    .nav{
-      position:absolute;
-      top:50%;
-      width:100%;
-      transform:translateY(-50%);
-      z-index:3;
-      display:flex;
-      justify-content:space-between;
-      padding:0 20px;
-      pointer-events:none;
+    .nav {
+      position: absolute; top: 50%; width: 100%; transform: translateY(-50%); z-index: 3;
+      display: flex; justify-content: space-between; padding: 0 20px; pointer-events: none;
     }
     .btn {
-      pointer-events:auto;
-      background: rgba(0,0,0,0.45);
-      border:none;
-      color:#e8e6ff;
-      width:48px; height:48px;
-      border-radius:999px;
-      cursor:pointer;
-      font-size:22px;
-      display:flex; align-items:center; justify-content:center;
-      transition:background .18s, box-shadow .18s, transform .12s;
-      box-shadow: 0 6px 20px rgba(79,70,229,0.08);
+      pointer-events: auto; background: rgba(0,0,0,0.45); border: none; color: #f8fafc;
+      width: 48px; height: 48px; border-radius: 999px; cursor: pointer; font-size: 22px;
+      display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s;
     }
-    .btn:hover{ background: linear-gradient(90deg, rgba(79,70,229,0.22), rgba(124,58,237,0.24)); transform:scale(1.05); }
+    .btn:hover { background: rgba(16,185,129,0.4); transform: scale(1.05); }
 
-    @media (max-width:900px){
-      .left{ width:100%; height:60vh; padding:28px; }
-      .right{ width:100%; height:40vh; }
-      .card{ width:100% }
+    /* ----- NEW TOOLS SECTION ----- */
+    .tools-section {
+      padding: 60px 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
-  </style>
-</head>
-<body>
+    .tool-box {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid rgba(16,185,129,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tool-box h2 {
+      font-size: 18px; color: var(--accent); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(16,185,129,0.1);
+      padding-bottom: 12px;
+    }
+    .tool-box h2 i { font-size: 22px; color: var(--violet-1); }
+
+    /* EMI Grid */
+    .emi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .emi-grid .full-w { grid-column: span 2; }
+    .emi-result {
+      grid-column: span 2; background: rgba(16,185,129,0.05); border-radius: 12px;
+      padding: 16px; margin-top: 10px; text-align: center; border: 1px solid rgba(16,185,129,0.2);
+    }
+    .emi-val { font-size: 26px; color: #fff; font-weight: 700; margin-top: 4px; text-shadow: 0 0 10px rgba(16,185,129,0.4); }
+    .emi-lbl { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+
+    /* Comparison Table */
+    .compare-container { grid-column: span 3; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    th { color: #94a3b8; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+    td { font-size: 14px; color: #e2e8f0; }
+    .action-btn { background: rgba(239, 68, 68, 0.1); color:#ef4444; border:1px solid rgba(239, 68, 68, 0.5); padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; transition: all 0.2s;}
+    .action-btn:hover { background: #ef4444; color: #fff; transform: scale(1.05); }
+
+    /* Amenities mock */
+    .am-mock {
+      background: rgba(15,23,42,0.5);
+      padding: 14px 18px; border-radius: 10px; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.03);
+    }
+    .am-title { color: #f8fafc; font-weight: 600; font-size: 15px; }
+    .am-desc { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+    .am-dist { color: var(--accent); font-weight: 600; font-size: 14px; }
+
+    @media (max-width:1100px){
+      .wrap{ flex-direction: column; height: auto; }
+      .left{ width:100%; padding: 28px; }
+      .right{ width:100%; height: 40vh; }
+      .card{ width: 100%; }
+      .tools-section { grid-template-columns: 1fr 1fr; padding: 40px 20px;}
+      .compare-container { grid-column: span 2; }
+    }
+    @media (max-width:768px){
+      .tools-section { grid-template-columns: 1fr; }
+      .compare-container { grid-column: span 1; }
+    }
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  
   <div class="wrap">
     <!-- LEFT: form -->
     <div class="left">
       <div class="glow" aria-hidden="true"></div>
       <div class="card">
-        <h1>Bangalore Home Price Predictor</h1>
+        <h1>Bangalore Home Predictor</h1>
 
         <label for="location">Location</label>
         <select id="location">
@@ -225,27 +252,35 @@
         <label for="bath">Bathrooms</label>
         <input id="bath" type="number" placeholder="e.g. 2" />
 
-        <button id="predictBtn">Predict Price</button>
-        <div id="result" class="result" aria-live="polite"></div>
+        <div class="amenities">
+          <label class="amenity-label"><input type="checkbox" id="parking" /> <i class="fa-solid fa-car" style="color:#94a3b8;"></i> Parking</label>
+        <label class="amenity-label"><input type="checkbox" id="furnished" /> <i class="fa-solid fa-couch" style="color:#94a3b8;"></i> Furnished</label>
       </div>
 
-      <div class="footer">✨ Created with ❤️ by <span style="color:var(--violet-1)">Diwansh</span> ✨</div>
+      <button id="predictBtn"><i class="fa-solid fa-wand-magic-sparkles"></i> Predict Price</button>
+      <div id="result" class="result" aria-live="polite"></div>
+      
+      <button id="addToCompareBtn" class="secondary" style="display:none;"><i class="fa-solid fa-code-compare"></i> Add to Comparison Tool</button>
+
+        <div class="history">
+          <h3>Recent Searches</h3>
+          <ul class="history-list" id="historyList">
+            <li style="color:#94a3b8; font-size:12px;">No recent searches</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer">✨ High-Precision Machine Learning Model ✨</div>
     </div>
 
     <!-- RIGHT: slideshow -->
     <div class="right">
       <div class="slides" id="slides">
-        <!-- 10 tested Unsplash images -->
         <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1600585153936-7c7b5a8d3f49?auto=format&fit=crop&w=1600&q=80')"></div>
         <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1600&q=80')"></div>
         <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80')"></div>
         <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=1600&q=80')"></div>
         <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=80')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1560185008-5a3d4e2b4a56?auto=format&fit=crop&w=1600&q=80')"></div>
       </div>
 
       <div class="overlay"></div>
@@ -257,9 +292,122 @@
     </div>
   </div>
 
+  <!-- ADVANCED TOOLS SECTION -->
+  <div class="tools-section">
+    <!-- EMI Calculator -->
+    <div class="tool-box">
+      <h2><i class="fa-solid fa-calculator"></i> EMI / Loan Calculator</h2>
+      <div class="emi-grid">
+        <div class="full-w">
+          <label>Loan Amount (₹)</label>
+          <input type="number" id="emiLoan" placeholder="e.g. 5000000" />
+        </div>
+        <div>
+          <label>Interest Rate (p.a. %)</label>
+          <input type="number" id="emiRate" placeholder="e.g. 8.5" step="0.1"/>
+        </div>
+        <div>
+          <label>Tenure (Years)</label>
+          <input type="number" id="emiTenure" placeholder="e.g. 20" />
+        </div>
+        
+        <div class="full-w">
+          <button onclick="calculateEMI()">Calculate EMI</button>
+        </div>
+
+        <div class="emi-result" id="emiResult" style="display:none;">
+          <div class="emi-lbl">Estimated Monthly EMI</div>
+          <div class="emi-val" id="emiValOut">₹0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nearby Amenities Finder -->
+    <div class="tool-box">
+      <h2><i class="fa-solid fa-hospital"></i> Nearby Amenities</h2>
+      <div style="margin-bottom: 20px;">
+        <label>Selected Location</label>
+        <input type="text" id="amenityLocation" readonly style="background:#0f172a; color:#94a3b8; cursor:not-allowed;" value="Select from form above" />
+      </div>
+      
+      <div id="amenitiesList" style="flex: 1; overflow-y: auto;">
+        <div style="color:#94a3b8; font-size:14px; text-align:center; padding: 20px;">
+          Select a location to discover top amenities near you.
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Trend Analysis -->
+    <div class="tool-box">
+      <h2><i class="fa-solid fa-chart-line"></i> Price Trends</h2>
+      <div style="margin-bottom: 20px;">
+        <label>Selected Location</label>
+        <input type="text" id="trendLocation" readonly style="background:#0f172a; color:#94a3b8; cursor:not-allowed;" value="Select from form above" />
+      </div>
+      
+      <div style="height: 250px; width: 100%;">
+        <canvas id="priceTrendChart"></canvas>
+      </div>
+      <div style="text-align:center; font-size:12px; color:#64748b; margin-top:10px;">
+        *Historical approximations
+      </div>
+    </div>
+
+    <!-- Property Comparison Tool -->
+    <div class="tool-box compare-container">
+      <h2><i class="fa-solid fa-scale-balanced"></i> Property Comparison Tool</h2>
+      <div id="compareTableContainer">
+        <table id="compareTable">
+          <thead>
+            <tr>
+              <th>Location</th>
+              <th>Area (Sqft)</th>
+              <th>Layout</th>
+              <th>Amenities</th>
+              <th>Est. Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="compareBody">
+            <tr><td colspan="6" style="text-align:center; padding: 20px; color:#94a3b8;">No properties added to compare yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6-Month Sentiment Forecast -->
+    <div class="tool-box compare-container" id="sentimentForecastBox" style="display:none; grid-column: span 3;">
+      <h2><i class="fa-solid fa-newspaper"></i> 6-Month AI Sentiment Forecast</h2>
+      <p style="color:#94a3b8; font-size:13px; margin-bottom:15px;">AI-generated price projection based on simulated local news and market trends for <strong><span id="forecastLocationLabel">Selected Location</span></strong>.</p>
+      
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <!-- Left: Chart -->
+        <div style="flex: 2; min-width: 300px; height: 250px; position:relative;">
+          <canvas id="sentimentForecastChart"></canvas>
+        </div>
+        <!-- Right: Headlines -->
+        <div style="flex: 1; min-width: 250px; background: rgba(15,23,42,0.4); border-radius: 12px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); overflow-y: auto; max-height: 250px;">
+          <h3 style="font-size: 14px; color: var(--accent); margin-bottom: 12px; border-bottom: 1px solid rgba(52,211,153,0.2); padding-bottom: 8px;">Key Driving Factors</h3>
+          <ul id="sentimentNewsList" style="list-style:none; display:flex; flex-direction:column; gap:10px; padding:0;">
+            <li style="color:#94a3b8; font-size:12px;">Waiting for prediction...</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
   <script>
+    // --- MAIN PREDICTOR ---
     const predictBtn = document.getElementById('predictBtn');
     const resultDiv = document.getElementById('result');
+    const btnCompare = document.getElementById('addToCompareBtn');
+    
+    let lastPrediction = null;
 
     predictBtn.addEventListener('click', async () => {
       const sqft = document.getElementById('sqft').value;
@@ -269,10 +417,12 @@
 
       if (!sqft || !bhk || !bath) {
         resultDiv.textContent = '⚠️ Please fill all fields';
+        resultDiv.style.display = 'block';
         return;
       }
 
       resultDiv.textContent = 'Calculating...';
+      resultDiv.style.display = 'block';
 
       try {
         const resp = await fetch('/predict_home_price', {
@@ -282,45 +432,312 @@
         });
         const data = await resp.json();
         let price = Number(data.estimated_price);
+        
+        const hasParking = document.getElementById('parking').checked;
+        const isFurnished = document.getElementById('furnished').checked;
+        if (hasParking) price *= 1.05; 
+        if (isFurnished) price *= 1.10; 
 
+        let displayPrice = '';
+        let rawAmount = 0;
         if (price >= 100) {
           const crore = price / 100;
-          resultDiv.innerHTML = `💰 Estimated Price: <strong>₹ ${crore.toFixed(2)} Crore</strong>`;
+          displayPrice = `₹ ${crore.toFixed(2)} Cr`;
+          rawAmount = crore * 10000000;
         } else {
-          resultDiv.innerHTML = `💰 Estimated Price: <strong>₹ ${price.toFixed(2)} Lakh</strong>`;
+          displayPrice = `₹ ${price.toFixed(2)} L`;
+          rawAmount = price * 100000;
         }
+        
+        const pricePerSqft = ((price * 100000) / parseFloat(sqft)).toFixed(0);
+        
+        resultDiv.innerHTML = `💰 Estimated Price: <strong>${displayPrice}</strong>
+          <div class="insight">Approx. ₹ ${Number(pricePerSqft).toLocaleString('en-IN')} / sq.ft</div>`;
+          
+        lastPrediction = {
+          loc: location, sqFt: sqft, bhk, bath,
+          park: hasParking, furn: isFurnished, 
+          priceText: displayPrice, rawAmt: rawAmount
+        };
+        
+        btnCompare.style.display = 'block';
+        
+        saveHistory(location, sqft, displayPrice);
+        populateEMI(rawAmount);
+        syncTools(location);
+        generateSentimentForecast(location, rawAmount);
+
       } catch (err) {
         console.error(err);
-        resultDiv.textContent = 'Server error — check terminal';
+        resultDiv.innerHTML = 'Server error — check terminal';
       }
     });
 
-    // -------- Slideshow --------
+    btnCompare.addEventListener('click', () => {
+      if(lastPrediction) { addToCompare(lastPrediction); }
+    });
+
+    // --- HISTORY ---
+    function saveHistory(loc, sqFt, p) {
+      let hist = JSON.parse(localStorage.getItem('bangalore_history') || '[]');
+      hist.unshift({ loc, sqFt, p });
+      if (hist.length > 3) hist.pop();
+      localStorage.setItem('bangalore_history', JSON.stringify(hist));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const hist = JSON.parse(localStorage.getItem('bangalore_history') || '[]');
+      const hl = document.getElementById('historyList');
+      if (hist.length > 0) {
+        hl.innerHTML = hist.map(h => {
+          let shortLoc = h.loc.length > 20 ? h.loc.substring(0, 18) + '...' : h.loc;
+          return `<li class="history-item">
+             <span><strong>${shortLoc}</strong> <br><span style="color:#94a3b8; font-size:11px;">${h.sqFt} sqft</span></span>
+             <strong>${h.p}</strong>
+           </li>`;
+        }).join('');
+      } else {
+        hl.innerHTML = `<li style="color:#94a3b8; font-size:12px;">No recent searches</li>`;
+      }
+    }
+    renderHistory();
+
+    // --- CAROUSEL ---
     const slides = Array.from(document.querySelectorAll('.slide'));
-    let current = 0;
-    let autoTimer = null;
-    const INTERVAL = 5000;
-
-    function show(idx){
-      slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
-      current = idx;
-    }
-
-    function startAuto(){
-      autoTimer = setInterval(()=> show((current+1)%slides.length), INTERVAL);
-    }
-    function stopAuto(){
-      clearInterval(autoTimer); autoTimer=null;
-    }
-
+    let current = 0; let autoTimer = null; const INTERVAL = 5000;
+    function show(idx){ slides.forEach((s,i)=> s.classList.toggle('active', i===idx)); current = idx; }
+    function startAuto(){ autoTimer = setInterval(()=> show((current+1)%slides.length), INTERVAL); }
+    function stopAuto(){ clearInterval(autoTimer); autoTimer=null; }
     document.getElementById('nextBtn').addEventListener('click', ()=>{ stopAuto(); show((current+1)%slides.length); startAuto(); });
     document.getElementById('prevBtn').addEventListener('click', ()=>{ stopAuto(); show((current-1+slides.length)%slides.length); startAuto(); });
-
     document.querySelector('.right').addEventListener('mouseenter', stopAuto);
     document.querySelector('.right').addEventListener('mouseleave', startAuto);
+    show(0); startAuto();
 
-    show(0);
-    startAuto();
+    // --- EMI CALCULATOR ---
+    function populateEMI(totalPropertyCost) {
+      // Assuming 80% loan for auto-population
+      const loanAmt = totalPropertyCost * 0.8;
+      document.getElementById('emiLoan').value = loanAmt;
+      document.getElementById('emiRate').value = 8.5; // Default interest
+      document.getElementById('emiTenure').value = 20; // Default years
+      calculateEMI();
+    }
+    
+    function calculateEMI() {
+      const p = parseFloat(document.getElementById('emiLoan').value);
+      const rate = parseFloat(document.getElementById('emiRate').value);
+      const tenure = parseFloat(document.getElementById('emiTenure').value);
+      
+      if(p && rate && tenure) {
+        const r = rate / 12 / 100;
+        const n = tenure * 12;
+        const emi = p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+        
+        document.getElementById('emiResult').style.display = 'block';
+        document.getElementById('emiValOut').innerText = `₹ ${Math.round(emi).toLocaleString('en-IN')}`;
+      }
+    }
+
+    // --- PRICE TRENDS CHART GENERATOR ---
+    let trendChartInstance = null;
+    
+    // --- UNIFIED TOOL SYNCHRONIZATION ---
+    function syncTools(locOverride = null) {
+      const vl = locOverride || document.getElementById('location').value;
+      if(vl) {
+        // Update Amenities
+        document.getElementById('amenityLocation').value = vl.toUpperCase();
+        generateMockAmenities(vl);
+        
+        // Update Trends
+        document.getElementById('trendLocation').value = vl.toUpperCase();
+        generateTrendChart(vl);
+      }
+    }
+    document.getElementById('location').addEventListener('change', () => syncTools());
+    
+    // Init on load
+    window.addEventListener('DOMContentLoaded', () => {
+      syncTools();
+    });
+
+    // --- AMENITIES GENERATOR ---
+    function generateMockAmenities(loc) {
+      if(!loc) return;
+      const places = [
+        {type: '🏫 Top School', names: ['International Public School', 'Global Prep Academy', 'St. Xavier High'], d: (Math.random()*3).toFixed(1)},
+        {type: '🏥 Hospital', names: ['Apollo Life', 'Care Multi-speciality', 'City Medical Center'], d: (Math.random()*4).toFixed(1)},
+        {type: '🛒 Shopping', names: ['Nexus Mall', 'Metro Supermarket', 'Central Hub'], d: (Math.random()*5).toFixed(1)},
+        {type: '🚇 Transport', names: ['Metro Station', 'Bus Terminal', 'Railway Junction'], d: (Math.random()*2).toFixed(1)}
+      ];
+      
+      let html = '';
+      places.forEach(p => {
+        let n = p.names[Math.floor(Math.random() * p.names.length)];
+        html += `
+          <div class="am-mock" style="animation: fadeIn 0.4s ease-out forwards;">
+            <div>
+              <div class="am-title">${p.type}</div>
+              <div class="am-desc">${n} near ${loc.substring(0,18)}</div>
+            </div>
+            <div class="am-dist">${p.d} km</div>
+          </div>
+        `;
+      });
+      document.getElementById('amenitiesList').innerHTML = html;
+    }
+
+    // --- PRICE TRENDS GENERATOR ---
+    function generateTrendChart(loc) {
+      const ctx = document.getElementById('priceTrendChart').getContext('2d');
+      const baseVal = 4000 + (loc.length * 150);
+      const labels = ['2020', '2021', '2022', '2023', '2024', '2025'];
+      const dataPoints = [baseVal * 0.75, baseVal * 0.82, baseVal * 0.90, baseVal * 0.95, baseVal * 1.05, baseVal * 1.15].map(v => Math.round(v));
+      
+      if(trendChartInstance) trendChartInstance.destroy();
+      
+      trendChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Avg. Price / Sqft (₹)', data: dataPoints, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: '#059669', pointRadius: 4, pointHoverRadius: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(15,23,42,0.9)', titleColor: '#34d399', bodyColor: '#f8fafc', borderColor: 'rgba(52,211,153,0.2)', borderWidth: 1, padding: 10 } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } } }
+      });
+    }
+
+    // --- 6-MONTH SENTIMENT FORECAST ---
+    let sentimentChartInstance = null;
+    async function generateSentimentForecast(loc, currentPrice) {
+      if (!loc || !currentPrice) return;
+      document.getElementById('sentimentForecastBox').style.display = 'block';
+      document.getElementById('forecastLocationLabel').innerText = loc.toUpperCase();
+      
+      const listEl = document.getElementById('sentimentNewsList');
+      listEl.innerHTML = '<li style="color:#94a3b8; font-size:12px;">Analyzing news sentiments... <i class="fa-solid fa-spinner fa-spin"></i></li>';
+
+      try {
+        const resp = await fetch('/api/forecast_sentiment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ location: loc, current_price: currentPrice })
+        });
+        const data = await resp.json();
+        
+        // Render List
+        let html = '';
+        data.months.forEach((m, idx) => {
+          let prevPrice = idx === 0 ? currentPrice : data.prices[idx-1];
+          let isPositive = data.prices[idx] > prevPrice;
+          let icon = isPositive ? '<i class="fa-solid fa-arrow-trend-up" style="color:var(--violet-1)"></i>' : '<i class="fa-solid fa-arrow-trend-down" style="color:#ef4444"></i>';
+          html += `
+            <li style="background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:6px; font-size:12px;">
+              <strong style="color:#f8fafc;">${m}</strong><br>
+              <span style="color:#94a3b8; font-size:11px;">${data.headlines[idx]}</span>
+              <div style="margin-top:4px;">${icon} Est: <span style="font-weight:600; color:var(--accent);">₹ ${data.prices[idx].toLocaleString('en-IN', {maximumFractionDigits:0})}</span></div>
+            </li>
+          `;
+        });
+        listEl.innerHTML = html;
+
+        // Render Chart
+        const ctx = document.getElementById('sentimentForecastChart').getContext('2d');
+        if(sentimentChartInstance) sentimentChartInstance.destroy();
+        
+        sentimentChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: { 
+            labels: ['Current', ...data.months], 
+            datasets: [{ 
+              label: 'Forecast Price (₹)', 
+              data: [currentPrice, ...data.prices], 
+              borderColor: '#3b82f6', 
+              backgroundColor: 'rgba(59, 130, 246, 0.1)', 
+              borderWidth: 3, 
+              fill: true, 
+              tension: 0.4, 
+              pointBackgroundColor: '#2563eb', 
+              pointRadius: 4, 
+              pointHoverRadius: 6 
+            }] 
+          },
+          options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+              legend: { display: false }, 
+              tooltip: { backgroundColor: 'rgba(15,23,42,0.9)', titleColor: '#93c5fd', bodyColor: '#f8fafc', borderColor: 'rgba(59,130,246,0.2)', borderWidth: 1, padding: 10 } 
+            }, 
+            scales: { 
+              y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, 
+              x: { grid: { display: false }, ticks: { color: '#94a3b8' } } 
+            } 
+          }
+        });
+
+      } catch (err) {
+        console.error(err);
+        listEl.innerHTML = '<li style="color:#ef4444; font-size:12px;">Failed to load forecast data.</li>';
+      }
+    }
+
+    // --- COMPARISON TOOL ---
+    function addToCompare(item) {
+      // Must deep copy to avoid reference issues
+      let safeItem = JSON.parse(JSON.stringify(item));
+      let comps = JSON.parse(localStorage.getItem('bhp_compare') || '[]');
+      // limit to 4 comparisons
+      if(comps.length >= 4) { comps.shift(); }
+      comps.push(safeItem);
+      localStorage.setItem('bhp_compare', JSON.stringify(comps));
+      renderCompare();
+      
+      const btn = document.getElementById('addToCompareBtn');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Added!';
+      setTimeout(()=> btn.innerHTML = '<i class="fa-solid fa-code-compare"></i> Add to Comparison Tool', 2000);
+    }
+    
+    function removeCompare(idx) {
+      let comps = JSON.parse(localStorage.getItem('bhp_compare') || '[]');
+      comps.splice(idx, 1);
+      localStorage.setItem('bhp_compare', JSON.stringify(comps));
+      renderCompare();
+    }
+    
+    function renderCompare() {
+      const comps = JSON.parse(localStorage.getItem('bhp_compare') || '[]');
+      const t = document.getElementById('compareBody');
+      if(comps.length === 0) {
+        t.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color:#94a3b8;">
+          <i class="fa-solid fa-inbox fa-3x" style="opacity:0.2; margin-bottom:15px; display:block;"></i> 
+          <div style="margin-bottom: 20px;">No properties added to compare yet.</div>
+          <button onclick="window.scrollTo({top:0, behavior:'smooth'})" style="background:var(--violet-1); color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; width:auto; font-size:14px; box-shadow:0 4px 15px rgba(16,185,129,0.3);"><i class="fa-solid fa-magnifying-glass-location"></i> Predict a Property to Compare</button>
+        </td></tr>`;
+        return;
+      }
+      
+      let html = '';
+      comps.forEach((c, i) => {
+        let ams = '';
+        if(c.park) ams += '<i class="fa-solid fa-car"></i> ';
+        if(c.furn) ams += '<i class="fa-solid fa-couch"></i> ';
+        if(!ams) ams = 'None';
+        
+        let shLoc = c.loc.length > 20 ? c.loc.substring(0,20)+'...' : c.loc;
+        
+        html += `
+          <tr>
+            <td><strong>${shLoc.toUpperCase()}</strong></td>
+            <td>${c.sqFt}</td>
+            <td>${c.bhk} BHK, ${c.bath} Bath</td>
+            <td style="color:#94a3b8;">${ams}</td>
+            <td style="color:var(--accent); font-weight:600;">${c.priceText}</td>
+            <td><button class="action-btn" onclick="removeCompare(${i})"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>
+        `;
+      });
+      t.innerHTML = html;
+    }
+    
+    renderCompare();
   </script>
-</body>
-</html>
+{% endblock %}

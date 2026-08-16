@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}Bangalore Home Price Prediction{% endblock %}</title>
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Chart.js for Price Trends -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    
+    :root{
+      --violet-1: #10b981; /* Emerald */
+      --violet-2: #059669; /* Dark Emerald */
+      --bg: #0f172a;
+      --card-bg: rgba(30,41,59,0.85);
+      --accent: rgba(52,211,153,0.85);
+    }
+    
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:"Poppins",sans-serif;
+      background:linear-gradient(180deg,#020617 0%, #0f172a 100%);
+      color:#f8fafc;
+      height:100vh;
+      display:flex;
+      flex-direction: column;
+      overflow:hidden;
+    }
+    
+    /* Navigation Bar */
+    .navbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .navbar-brand {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .navbar-brand span {
+      background: linear-gradient(90deg, var(--violet-1), #34d399);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+    
+    .nav-links a:hover, .nav-links a.active {
+      color: #fff;
+      text-shadow: 0 0 10px var(--violet-1);
+    }
+    
+    .page-container {
+      margin-top: 70px; /* Offset for navbar */
+      width: 100%;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      position: relative;
+    }
+    
+    {% block styles %}{% endblock %}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">🏙️ <span>BHP Predictor</span></a>
+    <div class="nav-links">
+      <a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+      <a href="/about" class="{% if request.path == '/about' %}active{% endif %}">About AI</a>
+      <a href="/contact" class="{% if request.path == '/contact' %}active{% endif %}">Contact</a>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
